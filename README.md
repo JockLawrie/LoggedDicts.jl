@@ -16,9 +16,7 @@ LoggedDicts is motivated by a need for a lightweight easy-to-use key-value data 
 - Unlike Redis, LoggedDict is not directly optimized for performance. Instead, it leverages existing performance optimizations in Julia itself. If you require better performance than LoggedDict provides, please try an alternative such as Redis or LevelDB...or feel free to implement a performance enhancement!
 
 ## Usage
-The getters and setters specify an ordered sequence of keys that defines a path to a value.
-If a specified path does not exist, `set!` will create it, but all other getters/setters will raise an error.
-The getters and setters are:
+The getters and setters specify an ordered sequence of keys that defines a path to a value. If a specified path does not exist, `set!` will create it, but all other getters/setters will raise an error. The getters and setters are:
 - Create: `set!(ld::LoggedDict, keys, value)`   __NB:__ This function overwrites values that already exist at the path defined by `keys`.
 - Read:   `get(ld::LoggedDict, keys...)`
 - Delete: `delete!(ld::LoggedDict, keys...)`
@@ -63,6 +61,6 @@ println(ld)
 - More functions for modifying existing values. E.g., splice!, unshift!, enqueue!, dequeue!, etc.
 - Deploying LoggedDict as a stand-alone web service.
 - Function for reconstructing the `LoggedDict` from the log.
-- Function for compressing the log such that the `LoggedDict` that is recontructed from the compressed log is the same as that reconstructed from the original log.
+- Function for compressing the log such that the `LoggedDict` that is reconstructed from the compressed log is the same as that reconstructed from the original log.
 - For key-value pairs consistent with Redis key-value pairs, wrap the existing syntax with Redis-like syntax so that the same syntax works for both `LoggedDict`s and `RedisConnection`s. Then users can swap out the backend by changing only 1 line...that which defines the data store. For example, `set(d, "key1", "value1")` will work whether d is a `LoggedDict` or a `RedisConnection`.
 - Performance optimizations.
