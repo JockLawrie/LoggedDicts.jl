@@ -24,8 +24,12 @@ Both functions specify a LoggedDict and an ordered sequence of keys that define 
 ```julia
 using LoggedDict
 
-# Create and populate a LoggedDict
-ld = LoggedDict("my_ld", "mydict.log")       # Init empty LoggedDict, with logs entries recorded in "mydict.log"
+# Create a LoggedDict
+# Specify log file
+# Include a name for the LoggedDict so that log entries can be attributed to this LoggedDict (in case other data sources write to log file)
+ld = LoggedDict("my_ld", "mydict.log")
+
+# Populate the LoggedDict
 set!(ld, "key1", "some_value")
 set!(ld, "key2", 2)                          # ld["key2"] equals 2
 set!(ld, "key2", "key21", rand(2))           # ld["key2"] equals Dict("key21" => [rand(), rand()]), overwrites previous value of 2
