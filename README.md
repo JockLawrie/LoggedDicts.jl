@@ -44,7 +44,8 @@ pop!(ld, "key3", "key31", 2)                 # ld["key3"] equals Dict("key31" =>
 push!(ld, "key3", "key31", 4)                # ld["key3"] equals Dict("key31" => Set([1, 3, 4]), "key32" => 32)
 set!(ld, "key4", Dict("key41" => 41, "key42" => 42))    # ld["key4"] equals Dict("key41" => 4, "key42" => 42)
 
-# Test for existence
+# Some simple queries
+println(get(ld, "key1"))                # "some_value"
 println(haskey(ld, "key3", "key32"))    # true
 delete!(ld, "key3", "key32")
 println(haskey(ld, "key3", "key32"))    # false
