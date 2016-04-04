@@ -46,7 +46,8 @@ set!(ld, "key4", Dict("key41" => 41, "key42" => 42))    # ld["key4"] equals Dict
 
 # Test for existence
 println(haskey(ld, "key3", "key32"))    # true
-println(haskey(ld, "key99"))            # false
+delete!(ld, "key3", "key32")
+println(haskey(ld, "key3", "key32"))    # false
 
 # Write the LoggedDict to disk
 write_logged_dict("mydict", ld)
