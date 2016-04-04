@@ -2,11 +2,12 @@ module LoggedDicts
 
 using Logging
 
-import Base: get, push!, pop!
+import Base: get, delete!, haskey, push!, pop!
 
-export LoggedDict, get,
-       set!, pop!, push!,
-       write_logged_dict, read_logged_dict
+export LoggedDict, set!, get, delete!,         # Create, Read, Delete
+       pop!, push!,                            # Update
+       write_logged_dict, read_logged_dict,
+       haskey
 
 
 type LoggedDict
@@ -48,6 +49,15 @@ function get(ld::LoggedDict, keys...)
 end
 
 
+"Deletes the key-value pair located at the path defined by keys..."
+function delete!(ld::LoggedDict, keys...)
+    dct = get_containing_dict(ld::LoggedDict, keys...)
+    ld.write_counter += 1
+    info(ld.logger, "$(ld.write_counter): DEL $keys")
+    delete!(dct, keys[length(keys)])
+end
+
+
 """
 Sets the value of ld::LoggedDict located at the path defined by keys... equal to value.
 
@@ -70,10 +80,10 @@ function set!(ld::LoggedDict, keys_value...)
         end
         dct = dct[k]
     end
-    k      = keys_value[nkeys]
-    dct[k] = keys_value[nkeys + 1]
+    k = keys_value[nkeys]
     ld.write_counter += 1
     info(ld.logger, "$(ld.write_counter): SET $keys_value")
+    dct[k] = keys_value[nkeys + 1]
 end
 
 
@@ -89,9 +99,9 @@ function push!(ld::LoggedDict, keys_value...)
     nkeys   = val_idx - 1           # Final argument is the value (not a key)
     keys    = keys_value[1:nkeys]
     dct     = get_containing_dict(ld::LoggedDict, keys...)
-    push!(dct[keys_value[nkeys]], keys_value[val_idx])
     ld.write_counter += 1
     info(ld.logger, "$(ld.write_counter): PUSH $keys_value")
+    push!(dct[keys_value[nkeys]], keys_value[val_idx])
 end
 
 
@@ -107,9 +117,9 @@ function pop!(ld::LoggedDict, keys_value...)
     nkeys   = val_idx - 1           # Final argument is the value (not a key)
     keys    = keys_value[1:nkeys]
     dct     = get_containing_dict(ld::LoggedDict, keys...)
-    pop!(dct[keys_value[nkeys]], keys_value[val_idx])
     ld.write_counter += 1
     info(ld.logger, "$(ld.write_counter): POP $keys_value")
+    pop!(dct[keys_value[nkeys]], keys_value[val_idx])
 end
 
 
@@ -129,6 +139,17 @@ function get_containing_dict(ld::LoggedDict, keys...)
         dct = dct[k]
     end
     dct
+end
+
+
+function haskey(ld::LoggedDict, keys...)
+    result = true
+    try
+	v = get(ld, keys...)
+    catch
+	result = false
+    end
+    result
 end
 
 

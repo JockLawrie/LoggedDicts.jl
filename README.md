@@ -16,14 +16,18 @@ LoggedDicts is motivated by a need for a lightweight easy-to-use key-value data 
 - Unlike Redis, LoggedDict is not directly optimized for performance. Instead, it leverages existing performance optimizations in Julia itself. If you require better performance than LoggedDict provides, please try an alternative such as Redis or LevelDB...or feel free to implement a performance enhancement!
 
 ## Usage
-There are two basic functions:
-- `get(ld::LoggedDict, keys...)`
-- `set!(ld::LoggedDict, keys, value)`
+The getters and setters specify an ordered sequence of keys that defines a path to a value.
+If a specified path does not exist, `set!` will create it, but all other getters/setters will raise an error.
+The getters and setters are:
+- Create: `set!(ld::LoggedDict, keys, value)`   __NB:__ This function overwrites values that already exist at the path defined by `keys`.
+- Read:   `get(ld::LoggedDict, keys...)`
+- Delete: `delete!(ld::LoggedDict, keys...)`
+- Update:
+    - `push!(ld::LoggedDict, keys, value)`
+    - `pop!(ld::LoggedDict, keys, value)`
+    - More to come as required
 
-Both functions specify a LoggedDict and an ordered sequence of keys that define a path to a value. `get` simply returns the value found at the path, and `set!` sets (__overwrites__) the value at the path. Other functions that modify the value are listed below. Note that these functions are only defined if they are defined in Julia Base.
-- push!(ld, keys, value)
-- pop!(ld, keys, value)
-
+## Example
 ```julia
 using LoggedDict
 
@@ -42,6 +46,10 @@ pop!(ld, "key3", "key31", 2)                 # ld["key3"] equals Dict("key31" =>
 push!(ld, "key3", "key31", 4)                # ld["key3"] equals Dict("key31" => Set([1, 3, 4]), "key32" => 32)
 set!(ld, "key4", Dict("key41" => 41, "key42" => 42))    # ld["key4"] equals Dict("key41" => 4, "key42" => 42)
 
+# Test for existence
+println(haskey(ld, "key3", "key32"))    # true
+println(haskey(ld, "key99"))            # false
+
 # Write the LoggedDict to disk
 write_logged_dict("mydict", ld)
 println(ld)
@@ -52,7 +60,7 @@ println(ld)
 ```
 
 ## Todo (ideas, rather than plans)
-- More functions for modifying existing values. E.g., splice, unshift, enqueue, dequeue, etc.
+- More functions for modifying existing values. E.g., splice!, unshift!, enqueue!, dequeue!, etc.
 - Deploying LoggedDict as a stand-alone web service.
 - Function for reconstructing the `LoggedDict` from the log.
 - Function for compressing the log such that the `LoggedDict` that is recontructed from the compressed log is the same as that reconstructed from the original log.
