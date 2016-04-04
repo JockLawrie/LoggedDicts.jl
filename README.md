@@ -25,7 +25,7 @@ Both functions specify a LoggedDict and an ordered sequence of keys that define 
 using LoggedDict
 
 # Create and populate a LoggedDict
-ld = LoggedDict("mydict.log")                # Init empty LoggedDict, with logs entries recorded in "mydict.log"
+ld = LoggedDict("my_ld", "mydict.log")       # Init empty LoggedDict, with logs entries recorded in "mydict.log"
 set!(ld, "key1", "some_value")
 set!(ld, "key2", 2)                          # ld["key2"] equals 2
 set!(ld, "key2", "key21", rand(2))           # ld["key2"] equals Dict("key21" => [rand(), rand()]), overwrites previous value of 2
@@ -46,6 +46,7 @@ println(ld)
 
 ## Todo (ideas, rather than plans)
 - More functions for modifying existing values. E.g., splice, unshift, enqueue, dequeue, etc.
+- Deploying LoggedDict as a stand-alone web service.
 - Function for reconstructing the `LoggedDict` from the log.
 - Function for compressing the log such that the `LoggedDict` that is recontructed from the compressed log is the same as that reconstructed from the original log.
 - For key-value pairs consistent with Redis key-value pairs, wrap the existing syntax with Redis-like syntax so that the same syntax works for both `LoggedDict`s and `RedisConnection`s. Then users can swap out the backend by changing only 1 line...that which defines the data store. For example, `set(d, "key1", "value1")` will work whether d is a `LoggedDict` or a `RedisConnection`.

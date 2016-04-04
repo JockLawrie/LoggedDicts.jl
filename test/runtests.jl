@@ -10,7 +10,7 @@ end
 
 
 # Create and populate a LoggedDict
-ld = LoggedDict("ld_test.log")               # Init empty LoggedDict, with logs entries recorded in "mydict.log"
+ld = LoggedDict("my_ld", "ld_test.log")      # Init empty LoggedDict, with logs entries recorded in "mydict.log"
 set!(ld, "key1", "some_value")
 set!(ld, "key2", 2)                          # ld["key2"] equals 2
 @test get(ld, "key2") == 2

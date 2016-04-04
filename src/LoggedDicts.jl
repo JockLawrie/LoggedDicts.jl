@@ -10,16 +10,17 @@ export LoggedDict, get,
 
 
 type LoggedDict
+    name::AbstractString    # LoggedDict is identifiable if it shares the log file with another source of logs
     dct::Dict
     logger::Logging.Logger
     write_counter::Int64    # Counts the writes
 
-    function LoggedDict(dct::Dict, logfile::AbstractString)
-        lgr = Logging.configure(output = open(logfile, "a"))
-        new(dct, lgr, 0)
+    function LoggedDict(name::AbstractString, dct::Dict, logfile::AbstractString)
+	lgr = Logger(name)
+        Logging.configure(lgr, output = open(logfile, "a"), level = INFO)
+        new(name, dct, lgr, 0)
     end
-    LoggedDict(logfile::AbstractString) = LoggedDict(Dict(), logfile)
-    LoggedDict() = LoggedDict(Dict(), "LoggedDict.log")
+    LoggedDict(name::AbstractString, logfile::AbstractString) = LoggedDict(name, Dict(), logfile)
 end
 
 
