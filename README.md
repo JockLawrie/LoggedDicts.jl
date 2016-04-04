@@ -1,5 +1,8 @@
 # LoggedDicts
 
+[![Build Status](https://travis-ci.org/JockLawrie/LoggedDicts.jl.svg?branch=master)](https://travis-ci.org/JockLawrie/LoggedDicts.jl)
+[![codecov.io](http://codecov.io/github/JockLawrie/LoggedDicts.jl/coverage.svg?branch=master)](http://codecov.io/github/JockLawrie/LoggedDicts.jl?branch=master)
+
 ## Why
 LoggedDicts is motivated by a need for a lightweight easy-to-use key-value data store similar to Redis, that can also store arbitrary Julia objects.
 
