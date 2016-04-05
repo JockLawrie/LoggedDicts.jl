@@ -17,7 +17,8 @@ LoggedDicts is motivated by a need for a lightweight easy-to-use key-value data 
 
 ## Usage
 The getters and setters specify an ordered sequence of keys that defines a path to a value. If a specified path does not exist, `set!` will create it, but all other getters/setters will raise an error. The getters and setters are:
-- Create: `set!(ld::LoggedDict, keys, value)`   __NB:__ This function overwrites values that already exist at the path defined by `keys`.
+- Create: `set!(ld::LoggedDict, keys, value)`
+    - __NB:__ If the path defined by `keys` already exists, this function overwrites the value at the path location. Otherwise the path is created and the value is set.
 - Read:   `get(ld::LoggedDict, keys...)`
 - Delete: `delete!(ld::LoggedDict, keys...)`
 - Update:
