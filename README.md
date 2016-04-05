@@ -8,8 +8,8 @@ LoggedDicts is motivated by a need for a lightweight easy-to-use key-value data 
 
 ## Functionality
 - A `LoggedDict` is simply a `Dict` for which every write is logged to a user-defined output.
-- `LoggedDict`s can be reconstructed from the log.
-- `LoggedDict`s can also be directly written to and read from disk.
+- A `LoggedDict` can be reconstructed from the log.
+- A `LoggedDict` can also be directly written to and read from disk.
 
 ## Notes
 - Since every write is logged, `LoggedDict`s are not suitable in applications with high write frequency.
