@@ -27,24 +27,23 @@ set!(ld, "key4", Dict("key41" => 41, "key42" => 42))    # ld["key4"] equals Dict
 @test get(ld, "key3") == Dict("key31" => Set([1, 3, 4]), "key32" => 32)
 @test get(ld, "key4") == Dict("key41" => 41, "key42" => 42)
 
-# Write the LoggedDict to disk
-#write_logged_dict("loggeddict.test", ld)
-
-# Read the LoggedDict from disk
-#ld = ""
-#ld = read_logged_dict("loggeddict.test")
-
-# Retest the values
-@test get(ld, "key1") == "some_value"
-@test get(ld, "key2") == Dict("key21" => [1.2, 3.4])
-@test get(ld, "key3") == Dict("key31" => Set([1, 3, 4]), "key32" => 32)
-@test get(ld, "key4") == Dict("key41" => 41, "key42" => 42)
-
 # Test: delete! and haskey
 delete!(ld, "key1")
 delete!(ld, "key3", "key32")
 @test haskey(ld, "key1") == false
 @test haskey(ld, "key3") == true
 @test haskey(ld, "key3", "key32") == false
+
+# Write the LoggedDict to disk
+write_logged_dict("loggeddict.test", ld)
+
+# Read the LoggedDict from disk
+ld = ""
+ld = read_logged_dict("loggeddict.test")
+
+# Retest the values
+@test get(ld, "key2") == Dict("key21" => [1.2, 3.4])
+@test get(ld, "key3") == Dict("key31" => Set([1, 3, 4]))
+@test get(ld, "key4") == Dict("key41" => 41, "key42" => 42)
 
 ### EOF
