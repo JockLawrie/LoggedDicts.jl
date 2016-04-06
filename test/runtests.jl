@@ -28,11 +28,11 @@ set!(ld, "key4", Dict("key41" => 41, "key42" => 42))    # ld["key4"] equals Dict
 @test get(ld, "key4") == Dict("key41" => 41, "key42" => 42)
 
 # Write the LoggedDict to disk
-write_logged_dict("loggeddict.test", ld)
+#write_logged_dict("loggeddict.test", ld)
 
 # Read the LoggedDict from disk
-ld = ""
-ld = read_logged_dict("loggeddict.test")
+#ld = ""
+#ld = read_logged_dict("loggeddict.test")
 
 # Retest the values
 @test get(ld, "key1") == "some_value"
