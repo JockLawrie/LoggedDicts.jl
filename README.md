@@ -28,7 +28,7 @@ The getters and setters specify an ordered sequence of keys that defines a path 
 
 ## Example
 ```julia
-using LoggedDict
+using LoggedDicts
 
 # Create a LoggedDict
 # Specify log file
