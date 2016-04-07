@@ -20,8 +20,7 @@ type LoggedDict
 	lgr = Logger(name)
         Logging.configure(lgr, output = open(logfile, "a"), level = INFO)
 	ld = new(name, dct, lgr, 0)
-        ld.write_counter += 1
-        info(ld.logger, "$(ld.write_counter): INIT")
+        log(ld, "INIT")
 	ld
     end
     LoggedDict(name::AbstractString, logfile::AbstractString) = LoggedDict(name, Dict(), logfile)
@@ -55,8 +54,7 @@ end
 "Deletes the key-value pair located at the path defined by keys..."
 function delete!(ld::LoggedDict, keys...)
     dct = get_containing_dict(ld::LoggedDict, keys...)
-    ld.write_counter += 1
-    info(ld.logger, "$(ld.write_counter): DEL $keys")
+    log(ld, "DEL $keys")
     delete!(dct, keys[length(keys)])
 end
 
@@ -84,8 +82,7 @@ function set!(ld::LoggedDict, keys_value...)
         dct = dct[k]
     end
     k = keys_value[nkeys]
-    ld.write_counter += 1
-    info(ld.logger, "$(ld.write_counter): SET $keys_value")
+    log(ld, "SET $keys_value")
     dct[k] = keys_value[nkeys + 1]
 end
 
@@ -102,8 +99,7 @@ function push!(ld::LoggedDict, keys_value...)
     nkeys   = val_idx - 1           # Final argument is the value (not a key)
     keys    = keys_value[1:nkeys]
     dct     = get_containing_dict(ld::LoggedDict, keys...)
-    ld.write_counter += 1
-    info(ld.logger, "$(ld.write_counter): PUSH $keys_value")
+    log(ld, "PUSH $keys_value")
     push!(dct[keys_value[nkeys]], keys_value[val_idx])
 end
 
@@ -120,9 +116,19 @@ function pop!(ld::LoggedDict, keys_value...)
     nkeys   = val_idx - 1           # Final argument is the value (not a key)
     keys    = keys_value[1:nkeys]
     dct     = get_containing_dict(ld::LoggedDict, keys...)
-    ld.write_counter += 1
-    info(ld.logger, "$(ld.write_counter): POP $keys_value")
+    log(ld, "POP $keys_value")
     pop!(dct[keys_value[nkeys]], keys_value[val_idx])
+end
+
+
+################################################################################
+### Utils
+################################################################################
+
+"Increments ld.write_counter, prepends write_counter to msg and writes msg to ld.logger."
+function log(ld::LoggedDict, msg::AbstractString)
+    ld.write_counter += 1
+    info(ld.logger, "$(ld.write_counter): " * msg)
 end
 
 
