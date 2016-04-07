@@ -19,7 +19,10 @@ type LoggedDict
     function LoggedDict(name::AbstractString, dct::Dict, logfile::AbstractString)
 	lgr = Logger(name)
         Logging.configure(lgr, output = open(logfile, "a"), level = INFO)
-        new(name, dct, lgr, 0)
+	ld = new(name, dct, lgr, 0)
+        ld.write_counter += 1
+        info(ld.logger, "$(ld.write_counter): INIT")
+	ld
     end
     LoggedDict(name::AbstractString, logfile::AbstractString) = LoggedDict(name, Dict(), logfile)
 end
