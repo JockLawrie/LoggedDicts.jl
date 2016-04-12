@@ -16,14 +16,18 @@ type LoggedDict
     logger::Logging.Logger
     write_counter::Int64    # Counts the writes
 
-    function LoggedDict(name::AbstractString, dct::Dict, logfile::AbstractString)
+    function LoggedDict(name::AbstractString, dct::Dict, logfile::AbstractString, logging_off = false)
 	lgr = Logger(name)
-        Logging.configure(lgr, output = open(logfile, "a"), level = INFO)
+	if logging_off
+	    Logging.configure(lgr, output = open(logfile, "a"), level = OFF)
+	else
+	    Logging.configure(lgr, output = open(logfile, "a"), level = INFO)
+	end
 	ld = new(name, dct, lgr, 0)
         log(ld, "INIT")
 	ld
     end
-    LoggedDict(name::AbstractString, logfile::AbstractString) = LoggedDict(name, Dict(), logfile)
+    LoggedDict(name::AbstractString, logfile::AbstractString, logging_off=false) = LoggedDict(name, Dict(), logfile, logging_off)
 end
 
 
