@@ -26,6 +26,7 @@ set!(ld, "key4", Dict("key41" => 41, "key42" => 42))    # ld["key4"] equals Dict
 @test get(ld, "key2") == Dict("key21" => [1.2, 3.4])
 @test get(ld, "key3") == Dict("key31" => Set([1, 3, 4]), "key32" => 32)
 @test get(ld, "key4") == Dict("key41" => 41, "key42" => 42)
+@test_throws KeyError get(ld, "key5")
 
 # Test: delete! and haskey
 delete!(ld, "key1")
@@ -45,5 +46,11 @@ ld = read_logged_dict("loggeddict.test")
 @test get(ld, "key2") == Dict("key21" => [1.2, 3.4])
 @test get(ld, "key3") == Dict("key31" => Set([1, 3, 4]))
 @test get(ld, "key4") == Dict("key41" => 41, "key42" => 42)
+
+# Test LoggedDict with logging off
+ld = LoggedDict("my_ld", "ld_test.log", true)      # Init empty LoggedDict, with logs entries recorded in "mydict.log"
+set!(ld, "key1", "some_value")
+@test get(ld, "key1") == "some_value"
+
 
 ### EOF
