@@ -26,7 +26,7 @@ set!(ld, "key4", Dict("key41" => 41, "key42" => 42))    # ld["key4"] equals Dict
 @test get(ld, "key2") == Dict("key21" => [1.2, 3.4])
 @test get(ld, "key3") == Dict("key31" => Set([1, 3, 4]), "key32" => 32)
 @test get(ld, "key4") == Dict("key41" => 41, "key42" => 42)
-@test_throws KeyError get(ld, "key5")
+@test_throws ErrorException get(ld, "key5", "key51")
 
 # Test: delete! and haskey
 delete!(ld, "key1")
